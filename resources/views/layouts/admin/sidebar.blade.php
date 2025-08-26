@@ -28,15 +28,24 @@
                 </a>
             </li>
 
-            {{-- <li>
-                <a href="{{ route('dashboard.penduduk.index') }}" class="flex items-center gap-3 p-3 rounded-xl transition-all duration-200
-                        {{ Request::is('dashboard/penduduk*')
+            <li>
+                <a href="{{ route('admin.teacher.index') }}" class="flex items-center gap-3 p-3 rounded-xl transition-all duration-200
+                        {{ Request::is('admin/teacher*')
                         ? 'bg-pink-200 text-pink-900 font-semibold shadow-inner'
                         : 'hover:bg-pink-100 text-gray-800' }}">
                     <i class="fas fa-users w-5 text-pink-600"></i>
-                    <span>Data Penduduk</span>
+                    <span>Data Guru</span>
                 </a>
-            </li> --}}
+            </li>
+            <li>
+                <a href="{{ route('admin.admin.index') }}" class="flex items-center gap-3 p-3 rounded-xl transition-all duration-200
+                        {{ Request::is('admin/admin*')
+                        ? 'bg-pink-200 text-pink-900 font-semibold shadow-inner'
+                        : 'hover:bg-pink-100 text-gray-800' }}">
+                    <i class="fas fa-users w-5 text-pink-600"></i>
+                    <span>Data User</span>
+                </a>
+            </li>
 
             {{-- <li>
                 <a href="{{ route('dashboard.user.index') }}" class="flex items-center gap-3 p-3 rounded-xl transition-all duration-200

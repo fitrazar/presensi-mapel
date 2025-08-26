@@ -1,5 +1,7 @@
 *.log
 .DS_Store
+.gitbash.sh
+.gitlog.txt
 .env
 .env.backup
 .env.production

@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         Admin::create([
-            'user_id' => 2,
+            'user_id' => 1,
             'name' => 'Admin',
             'phone' => '6281385931773',
             'gender' => 'Laki - Laki',
