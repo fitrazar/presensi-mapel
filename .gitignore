@@ -1,9 +1,5 @@
 *.log
 .DS_Store
-.gitbash.sh
-.gitlog.txt
-/.gitbash.sh
-/.gitlog.txt
 .env
 .env.backup
 .env.production
@@ -26,3 +22,5 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+.gitbash.sh
+.gitlog.txt

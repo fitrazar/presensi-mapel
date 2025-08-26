@@ -18,3 +18,12 @@
     - resources/views/layouts/admin/sidebar.blade.php
     - routes/web.php
 
+2025-08-26 16:15:14 - Pushed to main with commit: feat: update
+  🗂️  Files changed (A=Added, M=Modified, D=Deleted):
+    M	.gitignore
+    M	app/Http/Controllers/Admin/StudentController.php
+    M	gitbash.sh
+    M	gitlog.txt
+    A	resources/views/admin/student/index.blade.php
+    A	resources/views/admin/student/show.blade.php
+

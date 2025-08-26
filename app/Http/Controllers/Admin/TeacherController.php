@@ -123,7 +123,6 @@ class TeacherController extends Controller
             'gender' => 'required|in:Laki - Laki,Perempuan',
             'grade_id' => 'nullable|exists:grades,id',
             'is_roommates' => 'nullable|boolean',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $data = $request->only(['name', 'nip', 'phone', 'gender', 'grade_id']);
@@ -135,12 +134,6 @@ class TeacherController extends Controller
 
         $data['is_roommates'] = $request->has('is_roommates') ? 1 : 0;
 
-        if ($request->hasFile('photo')) {
-            if ($teacher->photo) {
-                Storage::disk('public')->delete($teacher->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('teachers', 'public');
-        }
 
         $teacher->update($data);
 
@@ -154,6 +147,6 @@ class TeacherController extends Controller
     {
         $teacher->user->delete();
 
-        return response()->json(['success' => true, 'message' => 'Admin berhasil dihapus!']);
+        return response()->json(['success' => true, 'message' => 'Guru berhasil dihapus!']);
     }
 }

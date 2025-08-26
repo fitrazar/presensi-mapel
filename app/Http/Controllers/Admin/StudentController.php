@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Grade;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -48,7 +49,9 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.student.create', [
+            'grades' => Grade::all(),
+        ]);
     }
 
     /**
@@ -56,7 +59,20 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'nisn' => 'nullable|string|max:50',
+            'gender' => 'required|in:Laki - Laki,Perempuan',
+            'grade_id' => 'nullable|exists:grades,id',
+        ]);
+
+        $data = $request->only(['name', 'nisn', 'gender', 'grade_id']);
+
+
+
+        Student::create($data);
+
+        return redirect()->route('admin.student.index')->with('success', 'Siswa berhasil ditambahkan.');
     }
 
     /**
@@ -72,7 +88,8 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        $grades = Grade::all();
+        return view('admin.student.edit', compact('student', 'grades'));
     }
 
     /**
@@ -80,7 +97,19 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'nisn' => 'nullable|string|max:50',
+            'gender' => 'required|in:Laki - Laki,Perempuan',
+            'grade_id' => 'nullable|exists:grades,id',
+        ]);
+
+        $data = $request->only(['name', 'nisn', 'gender', 'grade_id']);
+
+
+        $student->update($data);
+
+        return redirect()->route('admin.student.index')->with('success', 'Data siswa berhasil diperbarui.');
     }
 
     /**
@@ -88,6 +117,8 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $student->user->delete();
+
+        return response()->json(['success' => true, 'message' => 'Siswa berhasil dihapus!']);
     }
 }
