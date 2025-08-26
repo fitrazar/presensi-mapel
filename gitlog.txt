@@ -27,3 +27,15 @@
     A	resources/views/admin/student/index.blade.php
     A	resources/views/admin/student/show.blade.php
 
+2025-08-26 16:48:08 - Pushed to main with commit: feat: add student crud & update sidebar
+  🗂️  Files changed (A=Added, M=Modified, D=Deleted):
+    M	.gitignore
+    M	app/Http/Controllers/Admin/StudentController.php
+    M	app/Http/Controllers/Admin/TeacherController.php
+    M	gitlog.txt
+    A	resources/views/admin/student/create.blade.php
+    A	resources/views/admin/student/edit.blade.php
+    M	resources/views/admin/student/index.blade.php
+    M	resources/views/layouts/admin/sidebar.blade.php
+    M	routes/web.php
+

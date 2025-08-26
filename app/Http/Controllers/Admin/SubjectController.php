@@ -2,18 +2,38 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 
 class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $query = Subject::query();
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+
+                ->addColumn('action', function ($row) {
+                    return '
+                        <div class="flex space-x-2">
+                            <a href="' . route('admin.subject.show', $row->id) . '" class="btn btn-info btn-sm">Lihat</a>
+                            <a href="' . route('admin.subject.edit', $row->id) . '" class="btn btn-primary btn-sm">Edit</a>
+                            <button type="button" data-id="' . $row->id . '" class="delete-btn btn btn-error btn-sm">Hapus</button>
+                        </div>
+                    ';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.subject.index');
     }
 
     /**
@@ -21,7 +41,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.subject.create');
     }
 
     /**
@@ -29,7 +49,18 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'nullable|string|max:10',
+        ]);
+
+        $data = $request->only(['name', 'code']);
+
+
+
+        Subject::create($data);
+
+        return redirect()->route('admin.subject.index')->with('success', 'Mapel berhasil ditambahkan.');
     }
 
     /**
@@ -37,7 +68,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        //
+        return view('admin.subject.show', compact('subject'));
     }
 
     /**
@@ -45,7 +76,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        //
+        return view('admin.subject.edit', compact('subject'));
     }
 
     /**
@@ -53,7 +84,17 @@ class SubjectController extends Controller
      */
     public function update(Request $request, Subject $subject)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'nullable|string|max:10',
+        ]);
+
+        $data = $request->only(['name', 'code']);
+
+
+        $subject->update($data);
+
+        return redirect()->route('admin.subject.index')->with('success', 'Data mapel berhasil diperbarui.');
     }
 
     /**
@@ -61,6 +102,8 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        //
+        $subject->delete();
+
+        return response()->json(['success' => true, 'message' => 'Mapel berhasil dihapus!']);
     }
 }
