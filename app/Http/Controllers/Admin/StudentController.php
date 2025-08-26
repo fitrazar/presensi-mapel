@@ -2,18 +2,45 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 
 class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $query = Student::with(['user', 'grade']);
+
+            // Filter Gender
+            if ($request->filled('gender')) {
+                $query->where('gender', $request->gender);
+            }
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('grade', function ($row) {
+                    return $row->grade ? $row->grade->full_class_name : '<span class="text-gray-400">-</span>';
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                    <div class="flex space-x-2">
+                        <a href="' . route('admin.student.show', $row->id) . '" class="btn btn-info btn-sm">Lihat</a>
+                        <a href="' . route('admin.student.edit', $row->id) . '" class="btn btn-primary btn-sm">Edit</a>
+                        <button type="button" data-id="' . $row->id . '" class="delete-btn btn btn-error btn-sm">Hapus</button>
+                    </div>
+                ';
+                })
+                ->rawColumns(['grade', 'action'])
+                ->make(true);
+        }
+
+        return view('admin.student.index');
     }
 
     /**
@@ -37,7 +64,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        return view('admin.student.show', compact('student'));
     }
 
     /**

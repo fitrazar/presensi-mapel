@@ -21,6 +21,8 @@ else
   branch="main"
 fi
 
+changed_files=""
+
 if git diff --cached --quiet; then
   echo "⚠️  Tidak ada perubahan yang di-stage. Skip commit, langsung push..."
 else
@@ -29,8 +31,8 @@ else
   # Ambil hash commit terakhir
   last_commit=$(git rev-parse HEAD)
 
-  # Ambil daftar file yang diubah di commit tersebut
-  changed_files=$(git show --name-only --pretty=format: $last_commit | tail -n +2)
+  # Ambil daftar file yang diubah + status (A/M/D)
+  changed_files=$(git diff-tree --no-commit-id --name-status -r "$last_commit")
 fi
 
 git push origin "$branch" || { echo "❌ Gagal push ke branch $branch."; exit 1; }
@@ -41,8 +43,8 @@ echo "✅ Berhasil push ke $branch dengan pesan commit: $commitMessage"
 {
   echo "$timestamp - Pushed to $branch with commit: $commitMessage"
   if [[ -n "$changed_files" ]]; then
-    echo "  🗂️  Files changed:"
-    echo "$changed_files" | sed 's/^/    - /'
+    echo "  🗂️  Files changed (A=Added, M=Modified, D=Deleted):"
+    echo "$changed_files" | sed 's/^/    /'
   fi
   echo ""
 } >> gitlog.txt

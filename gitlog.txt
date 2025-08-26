@@ -1,0 +1,20 @@
+2025-08-26 16:09:09 - Pushed to main with commit: feat: update teacher & admin crud
+  🗂️  Files changed:
+    - app/Http/Controllers/Admin/AdminController.php
+    - app/Http/Controllers/Admin/StudentController.php
+    - app/Http/Controllers/Admin/SubjectController.php
+    - app/Http/Controllers/Admin/TeacherController.php
+    - database/seeders/AdminSeeder.php
+    - gitbash.sh
+    - gitlog.txt
+    - resources/views/admin/admin/create.blade.php
+    - resources/views/admin/admin/edit.blade.php
+    - resources/views/admin/admin/index.blade.php
+    - resources/views/admin/admin/show.blade.php
+    - resources/views/admin/teacher/create.blade.php
+    - resources/views/admin/teacher/edit.blade.php
+    - resources/views/admin/teacher/index.blade.php
+    - resources/views/admin/teacher/show.blade.php
+    - resources/views/layouts/admin/sidebar.blade.php
+    - routes/web.php
+
