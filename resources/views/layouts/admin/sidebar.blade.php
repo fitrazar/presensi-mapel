@@ -62,6 +62,15 @@
                     <span>Data Mapel</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('admin.schedule.index') }}" class="flex items-center gap-3 p-3 rounded-xl transition-all duration-300
+                          {{ Request::is('admin/schedule*') 
+                              ? 'bg-yellow-200/80 text-yellow-900 font-semibold shadow-inner ring-2 ring-yellow-400' 
+                              : 'hover:bg-yellow-100 text-gray-800' }}">
+                    <i class="fas fa-book-open w-5 text-yellow-600"></i>
+                    <span>Jadwal Mapel</span>
+                </a>
+            </li>
 
             <!-- Data User -->
             <li>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
+use App\Http\Controllers\Admin\ScheduleController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -21,6 +22,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('/student', StudentController::class);
     Route::resource('/teacher', TeacherController::class);
     Route::resource('/subject', SubjectController::class);
+    Route::resource('/schedule', ScheduleController::class);
 });
 
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {

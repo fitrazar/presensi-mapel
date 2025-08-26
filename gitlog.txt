@@ -39,3 +39,12 @@
     M	resources/views/layouts/admin/sidebar.blade.php
     M	routes/web.php
 
+2025-08-26 16:58:50 - Pushed to main with commit: feat: add subject/mapel crud
+  🗂️  Files changed (A=Added, M=Modified, D=Deleted):
+    M	app/Http/Controllers/Admin/SubjectController.php
+    M	gitlog.txt
+    A	resources/views/admin/subject/create.blade.php
+    A	resources/views/admin/subject/edit.blade.php
+    A	resources/views/admin/subject/index.blade.php
+    A	resources/views/admin/subject/show.blade.php
+

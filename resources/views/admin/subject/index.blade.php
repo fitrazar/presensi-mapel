@@ -68,7 +68,7 @@
                     let id = $(this).data('id');
                     Swal.fire({
                         title: 'Yakin hapus?',
-                        text: "Data siswa akan dihapus permanen!",
+                        text: "Data mapel akan dihapus permanen!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#d33',
