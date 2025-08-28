@@ -10,6 +10,10 @@ use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Teacher\RoommatesController;
+use App\Http\Controllers\Teacher\ReportController as TeacherReportController;
+use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController;
+use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -42,6 +46,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
     Route::get('/', [DashboardController::class, 'teacher'])->name('index');
+
+    Route::get('/roommates', [RoommatesController::class, 'index'])->name('roommates.index');
+    Route::get('/roommates/{grade}/{subject}', [RoommatesController::class, 'attendance'])->name('roommates.attendance');
+
+    Route::get('/schedule', [TeacherScheduleController::class, 'index'])->name('schedule.index');
+    Route::get('/attendance/{schedule}', [TeacherAttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance/update', [TeacherAttendanceController::class, 'updateStatus'])->name('attendance.updateStatus');
+    Route::get('/report', [TeacherReportController::class, 'index'])->name('report.index');
 });
 
 

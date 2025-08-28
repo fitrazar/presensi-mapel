@@ -89,3 +89,20 @@
     M	app/Imports/SubjectImport.php
     M	gitlog.txt
 
+2025-08-28 15:29:01 - Pushed to main with commit: feat: update
+  🗂️  Files changed (A=Added, M=Modified, D=Deleted):
+    A	app/Exports/AttendanceExport.php
+    A	app/Exports/AttendancePerMonthSheet.php
+    A	app/Http/Controllers/Admin/AttendanceController.php
+    A	app/Http/Controllers/Admin/ReportController.php
+    M	app/Http/Controllers/DashboardController.php
+    M	config/app.php
+    M	database/migrations/2025_08_25_092924_create_attendances_table.php
+    M	gitlog.txt
+    A	resources/views/admin/attendance/index.blade.php
+    M	resources/views/admin/index.blade.php
+    A	resources/views/admin/report/index.blade.php
+    A	resources/views/admin/report/pdf.blade.php
+    M	resources/views/layouts/admin/sidebar.blade.php
+    M	routes/web.php
+
