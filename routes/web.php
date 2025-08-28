@@ -54,6 +54,8 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::get('/attendance/{schedule}', [TeacherAttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance/update', [TeacherAttendanceController::class, 'updateStatus'])->name('attendance.updateStatus');
     Route::get('/report', [TeacherReportController::class, 'index'])->name('report.index');
+    Route::get('/report/export-excel', [TeacherReportController::class, 'exportExcel'])->name('report.exportExcel');
+    Route::get('/report/export-pdf', [TeacherReportController::class, 'exportPdf'])->name('report.exportPdf');
 });
 
 

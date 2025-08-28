@@ -106,3 +106,19 @@
     M	resources/views/layouts/admin/sidebar.blade.php
     M	routes/web.php
 
+2025-08-28 18:29:00 - Pushed to main with commit: feat: update
+  🗂️  Files changed (A=Added, M=Modified, D=Deleted):
+    M	app/Http/Controllers/DashboardController.php
+    A	app/Http/Controllers/Teacher/AttendanceController.php
+    A	app/Http/Controllers/Teacher/ReportController.php
+    A	app/Http/Controllers/Teacher/RoommatesController.php
+    A	app/Http/Controllers/Teacher/ScheduleController.php
+    M	gitlog.txt
+    M	resources/views/layouts/teacher/navbar.blade.php
+    A	resources/views/teacher/attendance/index.blade.php
+    M	resources/views/teacher/index.blade.php
+    A	resources/views/teacher/schedule/index.blade.php
+    A	resources/views/teacher/subject/attendance.blade.php
+    A	resources/views/teacher/subject/roommates.blade.php
+    M	routes/web.php
+
