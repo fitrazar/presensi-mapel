@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Teacher;
+use App\Models\Subject;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -19,7 +19,7 @@ class SubjectImport implements ToModel, WithHeadingRow
             ]);
 
 
-            return new Teacher([
+            return new Subject([
                 'name' => $row['nama_mapel'],
                 'code' => $row['kode'],
             ]);

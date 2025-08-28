@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use Carbon\Carbon;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -22,21 +23,22 @@ class ScheduleImport implements ToModel, WithHeadingRow
                 'row' => $row
             ]);
 
-            $teacher = Teacher::where('name', 'like', '%' . $row['nama_guru'] . '%');
-            $subject = Subject::where('name', 'like', '%' . $row['nama_mapel'] . '%');
-            $grade = Grade::where('level', 'like', '%' . substr($row['kelas'], 0, 1) . '%')->where('class_number', 'like', '%' . substr($row['kelas'], 1, 1) . '%');
+            $teacher = Teacher::where('name', 'like', '%' . $row['nama_guru'] . '%')->first();
+            $subject = Subject::where('name', 'like', '%' . $row['nama_mapel'] . '%')->first();
+            $grade = Grade::where('level', 'like', '%' . substr($row['kelas'], 0, 1) . '%')->where('class_number', 'like', '%' . substr($row['kelas'], 1, 1) . '%')->first();
 
             $subjectTeacher = SubjectTeacher::create([
                 'teacher_id' => $teacher->id,
                 'grade_id' => $grade->id,
                 'subject_id' => $subject->id,
             ]);
+            // dd($row);
 
             return new Schedule([
                 'subject_teacher_id' => $subjectTeacher->id,
                 'day' => $row['hari'],
-                'start_time' => $row['jam_masuk'],
-                'end_time' => $row['jam_selesai'],
+                'start_time' => Carbon::parse($row['jam_masuk']),
+                'end_time' => Carbon::parse($row['jam_selesai']),
             ]);
 
         } catch (\Throwable $e) {

@@ -62,3 +62,24 @@
     M	resources/views/layouts/admin/sidebar.blade.php
     M	routes/web.php
 
+2025-08-28 11:07:49 - Pushed to main with commit: feat: update
+  🗂️  Files changed (A=Added, M=Modified, D=Deleted):
+    M	app/Http/Controllers/Admin/ScheduleController.php
+    M	app/Http/Controllers/Admin/StudentController.php
+    M	app/Http/Controllers/Admin/SubjectController.php
+    M	app/Http/Controllers/Admin/TeacherController.php
+    A	app/Imports/ScheduleImport.php
+    A	app/Imports/StudentImport.php
+    A	app/Imports/SubjectImport.php
+    A	app/Imports/TeacherImport.php
+    M	database/migrations/2025_08_25_092527_create_grades_table.php
+    M	database/seeders/GradeSeeder.php
+    M	gitlog.txt
+    M	resources/views/admin/schedule/create.blade.php
+    M	resources/views/admin/schedule/edit.blade.php
+    M	resources/views/admin/schedule/index.blade.php
+    M	resources/views/admin/student/index.blade.php
+    M	resources/views/admin/subject/index.blade.php
+    M	resources/views/admin/teacher/index.blade.php
+    M	routes/web.php
+
