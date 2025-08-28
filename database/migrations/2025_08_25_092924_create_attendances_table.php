@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->foreignId('subject_teacher_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('schedule_id')->nullable()->constrained()->onDelete('cascade');
-            $table->enum('status', ['Hadir', 'Izin', 'Sakit', 'Alpa']);
+            $table->enum('status', ['Hadir', 'Izin', 'Sakit', 'Alpa', 'Pulang Sakit', 'Pulang', 'Keluar']);
             $table->string('image')->nullable();
             $table->date('date');
             $table->time('time');

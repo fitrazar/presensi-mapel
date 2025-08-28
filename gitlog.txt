@@ -83,3 +83,9 @@
     M	resources/views/admin/teacher/index.blade.php
     M	routes/web.php
 
+2025-08-28 11:46:05 - Pushed to main with commit: feat: update
+  🗂️  Files changed (A=Added, M=Modified, D=Deleted):
+    M	app/Imports/ScheduleImport.php
+    M	app/Imports/SubjectImport.php
+    M	gitlog.txt
+

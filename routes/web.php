@@ -4,10 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Admin\AttendanceController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -23,6 +25,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('/teacher', TeacherController::class);
     Route::resource('/subject', SubjectController::class);
     Route::resource('/schedule', ScheduleController::class);
+
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance/update', [AttendanceController::class, 'updateStatus'])->name('attendance.updateStatus');
+    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+    Route::get('/report/export-excel', [ReportController::class, 'exportExcel'])->name('report.exportExcel');
+    Route::get('/report/export-pdf', [ReportController::class, 'exportPdf'])->name('report.exportPdf');
 
 
     // Import
