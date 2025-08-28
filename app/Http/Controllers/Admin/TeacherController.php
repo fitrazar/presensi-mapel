@@ -6,8 +6,10 @@ use App\Models\User;
 use App\Models\Grade;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use App\Imports\TeacherImport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -148,5 +150,12 @@ class TeacherController extends Controller
         $teacher->user->delete();
 
         return response()->json(['success' => true, 'message' => 'Guru berhasil dihapus!']);
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new TeacherImport, $request->file('file'));
+
+        return back()->with('success', 'Data berhasil diimport!');
     }
 }

@@ -16,12 +16,21 @@
 
         <div class="bg-white shadow-md rounded-2xl p-6">
             <!-- Header -->
-            <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-3">
+            <div class="flex flex-col md:flex-row md:items-center mb-6 gap-3">
                 <h2 class="text-2xl font-bold text-gray-700">Data Siswa</h2>
                 <a href="{{ route('admin.student.create') }}"
                     class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
                     + Tambah Siswa
                 </a>
+                <form action="{{ route('admin.student.import') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="file" class="input">
+                    <button
+                        class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-indigo-700 transition"
+                        type="submit">
+                        Import Siswa
+                    </button>
+                </form>
             </div>
 
             <!-- Filter -->

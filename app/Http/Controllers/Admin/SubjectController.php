@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use App\Imports\SubjectImport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class SubjectController extends Controller
@@ -105,5 +107,12 @@ class SubjectController extends Controller
         $subject->delete();
 
         return response()->json(['success' => true, 'message' => 'Mapel berhasil dihapus!']);
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new SubjectImport, $request->file('file'));
+
+        return back()->with('success', 'Data berhasil diimport!');
     }
 }

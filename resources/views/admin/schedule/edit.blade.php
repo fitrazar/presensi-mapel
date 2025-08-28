@@ -28,19 +28,46 @@
                 <!-- Mata Pelajaran & Hari -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mata Pelajaran - Guru -
-                            Kelas</label>
-                        <select name="subject_teacher_id" id="subject_teacher_id" required
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mata Pelajaran</label>
+                        <select name="subject_id" id="subject_id" required
                             class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                             <option value="">-- Pilih --</option>
-                            @foreach ($subjectTeachers as $st)
-                            <option value="{{ $st->id }}" {{ old('subject_teacher_id', $schedule->subject_teacher_id) ==
+                            @foreach ($subjects as $st)
+                            <option value="{{ $st->id }}" {{ old('subject_id', $schedule->subjectTeacher->subject_id) ==
                                 $st->id ? 'selected' : '' }}>
-                                {{ $st->subject->name }} - {{ $st->teacher->name }} (Kelas {{ $st->grade->name }})
+                                {{ $st->name }}
                             </option>
                             @endforeach
                         </select>
-                        @error('subject_teacher_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        @error('subject_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Guru</label>
+                        <select name="teacher_id" id="teacher_id" required
+                            class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($teachers as $ts)
+                            <option value="{{ $ts->id }}" {{ old('teacher_id', $schedule->subjectTeacher->teacher_id) ==
+                                $ts->id ? 'selected' : '' }}>
+                                {{ $ts->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('teacher_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Kelas</label>
+                        <select name="grade_id" id="grade_id" required
+                            class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($grades as $gd)
+                            <option value="{{ $gd->id }}" {{ old('grade_id', $schedule->subjectTeacher->grade_id) ==
+                                $gd->id ? 'selected' : '' }}>
+                                {{ $gd->full_class_name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('grade_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>

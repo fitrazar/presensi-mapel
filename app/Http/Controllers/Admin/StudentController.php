@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Grade;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Imports\StudentImport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class StudentController extends Controller
@@ -120,5 +122,12 @@ class StudentController extends Controller
         $student->delete();
 
         return response()->json(['success' => true, 'message' => 'Siswa berhasil dihapus!']);
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new StudentImport, $request->file('file'));
+
+        return back()->with('success', 'Data berhasil diimport!');
     }
 }

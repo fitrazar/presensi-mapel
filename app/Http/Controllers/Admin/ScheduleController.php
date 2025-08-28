@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Grade;
+use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Models\SubjectTeacher;
+use App\Imports\ScheduleImport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class ScheduleController extends Controller
@@ -57,47 +62,63 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        $subjectTeachers = SubjectTeacher::with(['subject', 'teacher', 'grade'])->get();
+        $teachers = Teacher::all();
+        $grades = Grade::all();
+        $subjects = Subject::all();
 
-        return view('admin.schedule.create', compact('subjectTeachers'));
+        return view('admin.schedule.create', compact('teachers', 'grades', 'subjects'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'subject_teacher_id' => 'required|exists:subject_teachers,id',
+            'teacher_id' => 'required|exists:teachers,id',
+            'grade_id' => 'required|exists:grades,id',
+            'subject_id' => 'required|exists:subjects,id',
             'day' => 'required|string',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
+
         // Ambil kelas dari subject_teacher_id
-        $subjectTeacher = SubjectTeacher::with('grade')->findOrFail($request->subject_teacher_id);
+        $subjectTeacherFind = SubjectTeacher::with('grade')
+            ->where('teacher_id', $request->teacher_id)
+            ->where('grade_id', $request->grade_id)
+            ->where('subject_id', $request->subject_id)->first();
 
-        // Cek apakah bentrok
-        $conflict = Schedule::whereHas('subjectTeacher', function ($q) use ($subjectTeacher) {
-            $q->where('grade_id', $subjectTeacher->grade_id);
-        })
-            ->where('day', $request->day)
-            ->where(function ($q) use ($request) {
-                $q->whereBetween('start_time', [$request->start_time, $request->end_time])
-                    ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
-                    ->orWhere(function ($q2) use ($request) {
-                        $q2->where('start_time', '<=', $request->start_time)
-                            ->where('end_time', '>=', $request->end_time);
-                    });
+        if ($subjectTeacherFind) {
+            // Cek apakah bentrok
+            $conflict = Schedule::whereHas('subjectTeacher', function ($q) use ($subjectTeacherFind) {
+                $q->where('grade_id', $subjectTeacherFind->grade_id);
             })
-            ->exists();
+                ->where('day', $request->day)
+                ->where(function ($q) use ($request) {
+                    $q->whereBetween('start_time', [$request->start_time, $request->end_time])
+                        ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
+                        ->orWhere(function ($q2) use ($request) {
+                            $q2->where('start_time', '<=', $request->start_time)
+                                ->where('end_time', '>=', $request->end_time);
+                        });
+                })
+                ->exists();
 
-        if ($conflict) {
-            return back()->withErrors([
-                'conflict' => 'Jadwal bentrok dengan jadwal lain di kelas ini!'
-            ])->withInput();
+            if ($conflict) {
+                return back()->withErrors([
+                    'conflict' => 'Jadwal bentrok dengan jadwal lain di kelas ini!'
+                ])->withInput();
+            }
         }
+
+        $subjectTeacher = SubjectTeacher::create([
+            'teacher_id' => $request->teacher_id,
+            'grade_id' => $request->grade_id,
+            'subject_id' => $request->subject_id,
+        ]);
 
         // Jika tidak bentrok, simpan
         Schedule::create([
-            'subject_teacher_id' => $request->subject_teacher_id,
+            'subject_teacher_id' => $subjectTeacher->id,
             'day' => $request->day,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
@@ -120,8 +141,10 @@ class ScheduleController extends Controller
      */
     public function edit(Schedule $schedule)
     {
-        $subjectTeachers = SubjectTeacher::with(['subject', 'teacher', 'grade'])->get();
-        return view('admin.schedule.edit', compact('schedule', 'subjectTeachers'));
+        $teachers = Teacher::all();
+        $grades = Grade::all();
+        $subjects = Subject::all();
+        return view('admin.schedule.edit', compact('schedule', 'teachers', 'grades', 'subjects'));
     }
 
     /**
@@ -130,38 +153,51 @@ class ScheduleController extends Controller
     public function update(Request $request, Schedule $schedule)
     {
         $request->validate([
-            'subject_teacher_id' => 'required|exists:subject_teachers,id',
+            'teacher_id' => 'required|exists:teachers,id',
+            'grade_id' => 'required|exists:grades,id',
+            'subject_id' => 'required|exists:subjects,id',
             'day' => 'required|string',
             'start_time' => 'required',
             'end_time' => 'required|after:start_time',
         ]);
 
-        $subjectTeacher = SubjectTeacher::with('grade')->findOrFail($request->subject_teacher_id);
+        $subjectTeacherFind = SubjectTeacher::with('grade')
+            ->where('teacher_id', $request->teacher_id)
+            ->where('grade_id', $request->grade_id)
+            ->where('subject_id', $request->subject_id)->first();
 
-        // Cek bentrok kecuali jadwal yang sedang diupdate
-        $conflict = Schedule::whereHas('subjectTeacher', function ($q) use ($subjectTeacher) {
-            $q->where('grade_id', $subjectTeacher->grade_id);
-        })
-            ->where('day', $request->day)
-            ->where('id', '!=', $schedule->id) // <--- abaikan jadwal yang sedang diedit
-            ->where(function ($q) use ($request) {
-                $q->whereBetween('start_time', [$request->start_time, $request->end_time])
-                    ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
-                    ->orWhere(function ($q2) use ($request) {
-                        $q2->where('start_time', '<=', $request->start_time)
-                            ->where('end_time', '>=', $request->end_time);
-                    });
+        if ($subjectTeacherFind) {
+            // Cek bentrok kecuali jadwal yang sedang diupdate
+            $conflict = Schedule::whereHas('subjectTeacher', function ($q) use ($subjectTeacherFind) {
+                $q->where('grade_id', $subjectTeacherFind->grade_id);
             })
-            ->exists();
+                ->where('day', $request->day)
+                ->where('id', '!=', $schedule->id) // <--- abaikan jadwal yang sedang diedit
+                ->where(function ($q) use ($request) {
+                    $q->whereBetween('start_time', [$request->start_time, $request->end_time])
+                        ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
+                        ->orWhere(function ($q2) use ($request) {
+                            $q2->where('start_time', '<=', $request->start_time)
+                                ->where('end_time', '>=', $request->end_time);
+                        });
+                })
+                ->exists();
 
-        if ($conflict) {
-            return back()->withErrors([
-                'conflict' => 'Jadwal bentrok dengan jadwal lain di kelas ini!'
-            ])->withInput();
+            if ($conflict) {
+                return back()->withErrors([
+                    'conflict' => 'Jadwal bentrok dengan jadwal lain di kelas ini!'
+                ])->withInput();
+            }
         }
 
+        $subjectTeacherFind->update([
+            'teacher_id' => $request->teacher_id,
+            'grade_id' => $request->grade_id,
+            'subject_id' => $request->subject_id,
+        ]);
+
+
         $schedule->update([
-            'subject_teacher_id' => $request->subject_teacher_id,
             'day' => $request->day,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
@@ -179,5 +215,12 @@ class ScheduleController extends Controller
         $schedule->delete();
 
         return response()->json(['success' => true, 'message' => 'Jadwal Mapel berhasil dihapus!']);
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new ScheduleImport, $request->file('file'));
+
+        return back()->with('success', 'Data berhasil diimport!');
     }
 }

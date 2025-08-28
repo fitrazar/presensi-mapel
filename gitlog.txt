@@ -48,3 +48,17 @@
     A	resources/views/admin/subject/index.blade.php
     A	resources/views/admin/subject/show.blade.php
 
+2025-08-26 17:34:39 - Pushed to main with commit: feat: add schedule crud
+  🗂️  Files changed (A=Added, M=Modified, D=Deleted):
+    A	app/Http/Controllers/Admin/ScheduleController.php
+    M	app/Http/Controllers/Admin/StudentController.php
+    M	gitlog.txt
+    A	resources/views/admin/schedule/action.blade.php
+    A	resources/views/admin/schedule/create.blade.php
+    A	resources/views/admin/schedule/edit.blade.php
+    A	resources/views/admin/schedule/index.blade.php
+    A	resources/views/admin/schedule/show.blade.php
+    M	resources/views/admin/subject/index.blade.php
+    M	resources/views/layouts/admin/sidebar.blade.php
+    M	routes/web.php
+

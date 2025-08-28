@@ -23,6 +23,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('/teacher', TeacherController::class);
     Route::resource('/subject', SubjectController::class);
     Route::resource('/schedule', ScheduleController::class);
+
+
+    // Import
+    Route::post('/student/import', [StudentController::class, 'import'])->name('student.import');
+    Route::post('/teacher/import', [TeacherController::class, 'import'])->name('teacher.import');
+    Route::post('/subject/import', [SubjectController::class, 'import'])->name('subject.import');
+    Route::post('/schedule/import', [ScheduleController::class, 'import'])->name('schedule.import');
 });
 
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {

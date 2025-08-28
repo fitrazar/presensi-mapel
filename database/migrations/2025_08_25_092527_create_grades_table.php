@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('major_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('level');
-            $table->integer('class_number');
+            $table->string('class_number');
             $table->timestamps();
         });
     }
